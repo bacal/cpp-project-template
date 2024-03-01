@@ -1,10 +1,14 @@
-import <iostream>;
+#include <print>
 import project;
 
 int main(int argc, char **argv){
-  foo::bar b(32);
-  std::cout << b << '\n';
+  const foo::bar b(32);
+  std::println("{}",b);
+  std::println("{:#x}",b);
 
-  baz::fizz<int> t(44);
+
+  // const baz::fizz t(44);
+  // std::cout << t << '\n';
   return 0;
 }
+

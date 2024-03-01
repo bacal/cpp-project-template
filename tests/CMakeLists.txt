@@ -1,22 +1,30 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.28)
 
 project(tests)
 
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API "aa1f7df0-828a-4fcd-9afc-2dc80491aca7")
-
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP 1)
-
-add_compile_options(-fmodules)
+set(CMAKE_CXX_STANDARD 23)
 
 enable_testing()
 
-find_package(GTest REQUIRED)
+include(ExternalProject)
+
+find_package(GTest)
+if (NOT ${GTest_FOUND})
+    include(FetchContent)
+    FetchContent_Declare(
+            googletest
+            GIT_REPOSITORY https://github.com/google/googletest.git
+            GIT_TAG main
+    )
+    # For Windows: Prevent overriding the parent project's compiler/linker settings
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(googletest)
+endif ()
 
 add_executable(tests
         test_bar.cpp
-        test_fizz.cpp)
+)
 
-target_link_libraries(tests GTest::GTest GTest::gtest_main project_lib)
+target_link_libraries(tests GTest::gtest_main project_lib)
 
 gtest_discover_tests(tests)

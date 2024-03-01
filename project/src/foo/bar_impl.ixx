@@ -1,13 +1,14 @@
+module;
+#include <ostream>
 export module project.foo:bar_impl;
 import :bar;
-import <ostream>;
 
 namespace foo{
 	bar::bar()
 		:quux(0){}
-	bar::bar(int quux)
+	bar::bar(const int quux)
 		:quux(quux){}
-	int bar::get_quux(){
+	int bar::get_quux() const{
 		return quux;
 	}
 	std::ostream& operator<<(std::ostream& os, const bar& b){
@@ -15,5 +16,4 @@ namespace foo{
 		return os;
 	}
 }
-
 
